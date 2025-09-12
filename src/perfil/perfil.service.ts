@@ -1,26 +1,44 @@
 import { Injectable } from '@nestjs/common';
 import { CreatePerfilDto } from './dto/create-perfil.dto';
 import { UpdatePerfilDto } from './dto/update-perfil.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Perfil } from './entities/perfil.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class PerfilService {
-  create(createPerfilDto: CreatePerfilDto) {
-    return 'This action adds a new perfil';
+  constructor(
+    @InjectRepository(Perfil)
+    private periflRepository: Repository<Perfil>,
+  ) {}
+
+  async create(createPerfilDto: CreatePerfilDto): Promise<Perfil> {
+    const perfil = this.periflRepository.create(createPerfilDto);
+
+    return await this.periflRepository.save(perfil);
   }
 
-  findAll() {
-    return `This action returns all perfil`;
+  async findOne(id: number): Promise<Perfil> {
+    const perfil = await this.periflRepository.findOneBy({ id });
+
+    if (!perfil) {
+      throw new Error('perfil not found');
+    }
+
+    return perfil;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} perfil`;
-  }
+  async update(id: number, updatePerfilDto: UpdatePerfilDto): Promise<Perfil> {
+    const perfil = await this.periflRepository.findOneBy({ id });
 
-  update(id: number, updatePerfilDto: UpdatePerfilDto) {
-    return `This action updates a #${id} perfil`;
-  }
+    if (!perfil) {
+      throw new Error('perfil not found');
+    }
 
-  remove(id: number) {
-    return `This action removes a #${id} perfil`;
+    this.periflRepository.merge(perfil, updatePerfilDto);
+
+    const result = await this.periflRepository.save(perfil);
+
+    return result;
   }
 }
