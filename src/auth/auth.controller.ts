@@ -4,6 +4,9 @@ import { CreateAuthDto } from './dto/create-auth.dto';
 import { UpdateAuthDto } from './dto/update-auth.dto';
 
 
+//Hago este comentario porque me aparecio el comit en jira se abia tardado mucho en aparecerer
+
+
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
