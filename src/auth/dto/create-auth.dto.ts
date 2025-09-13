@@ -9,12 +9,12 @@ export class CreateAuthDto {
   apellido: string;
 
   @IsString()
-  username: string;
-  
-  @IsString()
   @IsNotEmpty()
   telefono: string;
-  
+
+  @IsString()
+  username: string;
+
   @IsEmail()
   @IsNotEmpty()
   email: string;
@@ -27,6 +27,4 @@ export class CreateAuthDto {
   @IsString()
   @IsNotEmpty()
   rol: number;
-
-  
 }
