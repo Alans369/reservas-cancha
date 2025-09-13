@@ -10,22 +10,27 @@ import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
-     ConfigModule.forRoot({
+    ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: '.env',
     }),
     TypeOrmModule.forRoot({
-      type: "mysql",
-      host: "mysql-test-esfe-8ff0.b.aivencloud.com",
+      type: 'mysql',
+      host: 'mysql-test-esfe-8ff0.b.aivencloud.com',
       port: 20787,
-      username: "avnadmin",
-      password: "AVNS_PfxZhqEHsyFEn50ylaO",
-      database: "TiendaOnline",
+      username: 'avnadmin',
+      password: 'AVNS_PfxZhqEHsyFEn50ylaO',
+      database: 'TiendaOnline',
       logging: true,
-      synchronize: true,
+      synchronize: false,
       autoLoadEntities: true,
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
-    }),PerfilModule, UsuariosModule, RolModule, AuthModule],
+    }),
+    PerfilModule,
+    UsuariosModule,
+    RolModule,
+    AuthModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

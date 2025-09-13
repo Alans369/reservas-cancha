@@ -4,6 +4,8 @@ import {
   Body,
   HttpException,
   HttpStatus,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateAuthDto } from './dto/create-auth.dto';
@@ -16,7 +18,6 @@ import { Perfil } from 'src/perfil/entities/perfil.entity';
 
 //Hago este comentario porque me aparecio el comit en jira se abia tardado mucho en aparecerer
 
-
 @Controller('auth')
 export class AuthController {
   constructor(
@@ -25,6 +26,7 @@ export class AuthController {
     private readonly perfilService: PerfilService,
   ) {}
 
+  @UsePipes(new ValidationPipe())
   @Post('/login')
   async login(@Body() loginAuthDto: LoginAuthDto) {
     try {
@@ -42,6 +44,7 @@ export class AuthController {
     }
   }
 
+  @UsePipes(new ValidationPipe())
   @Post('/register')
   async register(@Body() createAuthDto: CreateAuthDto) {
     const usuario = new Usuario();
