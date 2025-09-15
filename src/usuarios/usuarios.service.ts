@@ -17,6 +17,12 @@ export class UsuariosService {
   }
 
   async findOne(username: string): Promise<Usuario | null> {
-    return this.usersRepository.findOneBy({ username: username });
+    return this.usersRepository.findOne({
+      where: { username },
+      relations: {
+        rol: true,
+        perfil: true,
+      },
+    });
   }
 }

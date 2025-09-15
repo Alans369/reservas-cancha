@@ -7,6 +7,7 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { RolModule } from './rol/rol.module';
 import { AuthModule } from './auth/auth.module';
+import { CanchaModule } from './cancha/cancha.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { AuthModule } from './auth/auth.module';
     UsuariosModule,
     RolModule,
     AuthModule,
+    CanchaModule,
   ],
   controllers: [AppController],
   providers: [AppService],

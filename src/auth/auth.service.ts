@@ -32,6 +32,8 @@ export class AuthService {
   }
 
   async generateTokens(user: Usuario): Promise<AuthResponse> {
+    console.log('generando token');
+
     const payload = {
       sub: user.id,
       username: user.username,
