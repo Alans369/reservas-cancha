@@ -9,5 +9,6 @@ import { UsuariosModule } from 'src/usuarios/usuarios.module';
   imports: [TypeOrmModule.forFeature([Cancha]), UsuariosModule],
   controllers: [CanchaController],
   providers: [CanchaService],
+  exports: [CanchaService],
 })
 export class CanchaModule {}

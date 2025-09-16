@@ -1,26 +1,90 @@
 import { Injectable } from '@nestjs/common';
-import { CreateReservaDto } from './dto/create-reserva.dto';
-import { UpdateReservaDto } from './dto/update-reserva.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Reserva } from './entities/reserva.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class ReservaService {
-  create(createReservaDto: CreateReservaDto) {
-    return 'This action adds a new reserva';
+  constructor(
+    @InjectRepository(Reserva)
+    private reservaRepository: Repository<Reserva>,
+  ) {}
+
+  async create(reserva: Omit<Reserva, 'id'>): Promise<Reserva> {
+    try {
+      const Reserva = this.reservaRepository.create(reserva);
+      return await this.reservaRepository.save(Reserva);
+    } catch (error) {
+      console.log(error);
+      throw new Error('error al crear la reserva');
+    }
   }
 
-  findAll() {
-    return `This action returns all reserva`;
+  async findAll(id: number): Promise<Reserva[]> {
+    try {
+      const reserva = await this.reservaRepository
+        .createQueryBuilder()
+        .where('Reserva.cancha.id=:id', { id })
+        .getMany();
+
+      if (!reserva) {
+        return [];
+      }
+
+      return reserva;
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      throw new Error('error al obtener las reserva del propietario');
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} reserva`;
+  async findAllcliente(id: number): Promise<Reserva[]> {
+    try {
+      const reserva = await this.reservaRepository
+        .createQueryBuilder()
+        .where('Reserva.cliente.id=:id', { id })
+        .getMany();
+
+      if (!reserva) {
+        return [];
+      }
+
+      return reserva;
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      throw new Error('error al obtener las reserva del cliente');
+    }
   }
 
-  update(id: number, updateReservaDto: UpdateReservaDto) {
-    return `This action updates a #${id} reserva`;
+  async findOne(id: number): Promise<Reserva | null> {
+    try {
+      return await this.reservaRepository.findOne({ where: { id } });
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      throw new Error('error al obtener las  reservas por id del propietario');
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} reserva`;
+  async update(
+    id: number,
+    estado: 'pendiente' | 'confirmada' | 'cancelada',
+  ): Promise<boolean> {
+    try {
+      const rs = await this.reservaRepository
+        .createQueryBuilder()
+        .update(Reserva)
+        .set({
+          estado,
+        })
+        .where('id = :id', { id })
+        .execute();
+
+      return rs.affected != undefined && rs.affected > 0;
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      throw new Error('error al obtener al actualizar la reserva');
+    }
   }
 }
