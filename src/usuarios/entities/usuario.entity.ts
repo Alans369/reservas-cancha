@@ -1,9 +1,11 @@
+import { Cancha } from 'src/cancha/entities/cancha.entity';
 import { Perfil } from 'src/perfil/entities/perfil.entity';
 import { Rol } from 'src/rol/entities/rol.entity';
 import {
   Column,
   Entity,
   JoinColumn,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -29,4 +31,7 @@ export class Usuario {
   @OneToOne(() => Perfil)
   @JoinColumn()
   perfil: Perfil;
+
+  @OneToMany(() => Cancha, (cancha) => cancha.propetario)
+  canchas: Cancha[];
 }

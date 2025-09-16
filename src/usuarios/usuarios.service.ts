@@ -25,4 +25,14 @@ export class UsuariosService {
       },
     });
   }
+
+  async findById(id: number): Promise<Usuario | null> {
+    return this.usersRepository.findOne({
+      where: { id },
+      relations: {
+        rol: true,
+        perfil: true,
+      },
+    });
+  }
 }

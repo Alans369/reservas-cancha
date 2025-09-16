@@ -3,7 +3,7 @@ import { PerfilService } from './perfil.service';
 
 import { UpdatePerfilDto } from './dto/update-perfil.dto';
 
-@Controller('perfil')
+@Controller('api/v1/perfil')
 export class PerfilController {
   constructor(private readonly perfilService: PerfilService) {}
 
