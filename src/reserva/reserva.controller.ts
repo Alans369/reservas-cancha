@@ -8,6 +8,9 @@ import {
   Req,
   HttpException,
   HttpStatus,
+  UsePipes,
+  ValidationPipe,
+  UseGuards,
 } from '@nestjs/common';
 import { ReservaService } from './reserva.service';
 import { CreateReservaDto } from './dto/create-reserva.dto';
@@ -16,6 +19,8 @@ import { Usuario } from 'src/usuarios/entities/usuario.entity';
 import { CanchaService } from 'src/cancha/cancha.service';
 import { Cancha } from 'src/cancha/entities/cancha.entity';
 import { Reserva } from './entities/reserva.entity';
+import { Roles } from 'src/role/role.decorator';
+import { RoleGuard } from 'src/role/role.guard';
 
 @Controller('/api/v1/reserva')
 export class ReservaController {
@@ -26,6 +31,9 @@ export class ReservaController {
   ) {}
 
   @Post()
+  @Roles(['CLIENTE'])
+  @UseGuards(RoleGuard)
+  @UsePipes(new ValidationPipe())
   async create(
     @Body() createReservaDto: CreateReservaDto,
     @Req() req: Request & { UserId?: string },
@@ -56,6 +64,8 @@ export class ReservaController {
   }
 
   @Get()
+  @Roles(['ADMIN'])
+  @UseGuards(RoleGuard)
   async findAll(@Req() req: Request & { UserId?: string }) {
     try {
       return this.reservaService.findAll(parseInt(req.UserId as string));
@@ -67,7 +77,8 @@ export class ReservaController {
       );
     }
   }
-
+  @Roles(['CLIENTE'])
+  @UseGuards(RoleGuard)
   @Get('/cliente')
   async findAllcliente(@Req() req: Request & { UserId?: string }) {
     try {
@@ -80,7 +91,8 @@ export class ReservaController {
       );
     }
   }
-
+  @Roles(['CLIENTE'])
+  @UseGuards(RoleGuard)
   @Get(':id')
   async findOne(@Param('id') id: string) {
     try {
@@ -94,7 +106,8 @@ export class ReservaController {
       );
     }
   }
-
+  @Roles(['ADMIN'])
+  @UseGuards(RoleGuard)
   @Patch(':id')
   async update(
     @Param('id') id: string,

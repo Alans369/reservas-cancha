@@ -25,6 +25,8 @@ export class VerificartokenMiddleware implements NestMiddleware {
       // so that we can access it in our route handlers
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
       req['UserId'] = payload.sub;
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+      req['role'] = payload.role;
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       console.log(payload.sub);
     } catch {
