@@ -21,7 +21,8 @@ import { Cancha } from 'src/cancha/entities/cancha.entity';
 import { Reserva } from './entities/reserva.entity';
 import { Roles } from 'src/role/role.decorator';
 import { RoleGuard } from 'src/role/role.guard';
-
+import { ApiBearerAuth } from '@nestjs/swagger';
+@ApiBearerAuth()
 @Controller('/api/v1/reserva')
 export class ReservaController {
   constructor(
