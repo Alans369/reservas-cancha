@@ -1,4 +1,4 @@
-import { Controller, Get, Body, Put, Param } from '@nestjs/common';
+import { Controller, Get, Body, Put, Param, Post, Req } from '@nestjs/common';
 import { PerfilService } from './perfil.service';
 
 import { UpdatePerfilDto } from './dto/update-perfil.dto';
@@ -12,8 +12,8 @@ export class PerfilController {
     return this.perfilService.findOne(+id);
   }
 
-  @Put(':id')
-  update(@Param('id') id: string, @Body() updatePerfilDto: UpdatePerfilDto) {
-    return this.perfilService.update(+id, updatePerfilDto);
+  @Post()
+  update(@Body() updatePerfilDto: UpdatePerfilDto, @Req() req: Request & { UserId?: string }){
+    return this.perfilService.update(parseInt(req.UserId as string ), updatePerfilDto);
   }
 }

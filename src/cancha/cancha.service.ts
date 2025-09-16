@@ -24,20 +24,27 @@ export class CanchaService {
     }
   }
 
-  async findAll(usuario: Usuario): Promise<Cancha[]> {
+  async findAll(usuario: Usuario,page:number,pageSize:number): Promise<{data:Cancha[],total:number}> {
     try {
-      const canchas = await this.canchaRepository.find({
+     /* const canchas = await this.canchaRepository.find({
         where: { propetario: usuario, activa: true },
         relations: {
           propetario: true,
         },
-      });
+      });*/
 
-      if (!canchas) {
-        return [];
+      const [result,total]  = await this.canchaRepository
+      .createQueryBuilder()
+      .where("Cancha.propetario.id =:id",{id:usuario.id})
+      .skip((page - 1) * pageSize)
+              .take(pageSize)
+              .getManyAndCount();
+
+      if (total==0) {
+        return {data:[],total:0};
       }
 
-      return canchas;
+      return {data:result,total};
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       throw new Error('error al obtener las cnchas');
