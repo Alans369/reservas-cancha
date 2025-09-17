@@ -21,8 +21,9 @@ import { Cancha } from 'src/cancha/entities/cancha.entity';
 import { Reserva } from './entities/reserva.entity';
 import { Roles } from 'src/role/role.decorator';
 import { RoleGuard } from 'src/role/role.guard';
-import { ApiBearerAuth } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 @ApiBearerAuth()
+@ApiTags('reserva')
 @Controller('/api/v1/reserva')
 export class ReservaController {
   constructor(
@@ -110,6 +111,20 @@ export class ReservaController {
   @Roles(['ADMIN'])
   @UseGuards(RoleGuard)
   @Patch(':id')
+  @ApiOperation({ summary: 'Actualizar estado de reserva' })
+@ApiBody({
+  schema: {
+    type: 'object',
+    properties: {
+      estado: {
+        type: 'string',
+        enum: ['pendiente', 'confirmada', 'cancelada'],
+        example: 'cancelada'
+      }
+    },
+    required: ['estado']
+  }
+})
   async update(
     @Param('id') id: string,
     @Body() data: { estado: 'pendiente' | 'confirmada' | 'cancelada' },

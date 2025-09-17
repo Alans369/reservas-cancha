@@ -70,6 +70,8 @@ export class ReservaService {
     id: number,
     estado: 'pendiente' | 'confirmada' | 'cancelada',
   ): Promise<boolean> {
+
+  
     try {
       const rs = await this.reservaRepository
         .createQueryBuilder()
