@@ -92,7 +92,7 @@ export class ReservaController {
       );
     }
   }
-  @Roles(['CLIENTE'])
+  @Roles(['CLIENTE','ADMIN'])
   @UseGuards(RoleGuard)
   @Get(':id')
   async findOne(@Param('id') id: string) {

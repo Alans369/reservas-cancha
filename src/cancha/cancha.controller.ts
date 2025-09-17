@@ -12,6 +12,7 @@ import {
   ValidationPipe,
   Put,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { CanchaService } from './cancha.service';
 import { CreateCanchaDto } from './dto/create-cancha.dto';
@@ -19,6 +20,8 @@ import { UpdateCanchaDto } from './dto/update-cancha.dto';
 import { UsuariosService } from 'src/usuarios/usuarios.service';
 import { Usuario } from 'src/usuarios/entities/usuario.entity';
 import { ApiBearerAuth } from '@nestjs/swagger';
+import { Roles } from 'src/role/role.decorator';
+import { RoleGuard } from 'src/role/role.guard';
 @ApiBearerAuth()
 @Controller('api/v1/cancha')
 export class CanchaController {
@@ -28,6 +31,8 @@ export class CanchaController {
   ) { }
 
   @Post()
+  @Roles(['ADMIN'])
+  @UseGuards(RoleGuard)
   @UsePipes(new ValidationPipe({ whitelist: true }))
   async create(
     @Body() createCanchaDto: CreateCanchaDto,
@@ -54,6 +59,8 @@ export class CanchaController {
   }
 
   @Get()
+  @Roles(['ADMIN'])
+  @UseGuards(RoleGuard)
   async findAll(@Query('page') page: string, @Query('pageSize') pageSize: string, @Req() req: Request & { UserId?: string }) {
   try {
     const user = await this.usuarioService.findById(
@@ -69,8 +76,10 @@ export class CanchaController {
     );
   }
 }
-
+ 
 @Get('/cliente')
+@Roles(['CLIENTE'])
+@UseGuards(RoleGuard)
 async findAllcliente() {
   try {
     return this.canchaService.findAllcliente();
@@ -82,8 +91,10 @@ async findAllcliente() {
     );
   }
 }
-
+ 
 @Get(':id')
+@Roles(['CLIENTE','ADMIN'])
+@UseGuards(RoleGuard)
 async findOne(@Param('id') id: string) {
   try {
     return await this.canchaService.findOne(+id);
@@ -97,7 +108,11 @@ async findOne(@Param('id') id: string) {
   }
 }
 
+
+
 @Put(':id')
+@Roles(['ADMIN'])
+@UseGuards(RoleGuard)
 @UsePipes(new ValidationPipe({ whitelist: true }))
 async update(
   @Param('id') id: string,
@@ -115,6 +130,8 @@ async update(
 }
 
 @Delete(':id')
+ @Roles(['ADMIN'])
+@UseGuards(RoleGuard)
 async remove(@Param('id') id: string) {
   try {
     return await this.canchaService.remove(+id);
