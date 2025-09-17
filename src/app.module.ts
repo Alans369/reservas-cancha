@@ -30,7 +30,7 @@ import { VerificartokenMiddleware } from './verificartoken/verificartoken.middle
       password: 'AVNS_PfxZhqEHsyFEn50ylaO',
       database: 'TiendaOnline',
       logging: true,
-      synchronize: false,
+      synchronize: true,
       autoLoadEntities: true,
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
     }),
