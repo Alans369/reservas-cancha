@@ -30,6 +30,7 @@ export class VerificartokenMiddleware implements NestMiddleware {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       console.log(payload.sub);
     } catch {
+      console.log('verificando token')
       throw new UnauthorizedException();
     }
 
