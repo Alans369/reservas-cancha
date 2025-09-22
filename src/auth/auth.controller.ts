@@ -15,6 +15,7 @@ import { Rol } from 'src/rol/entities/rol.entity';
 import { Usuario } from 'src/usuarios/entities/usuario.entity';
 import { PerfilService } from 'src/perfil/perfil.service';
 import { Perfil } from 'src/perfil/entities/perfil.entity';
+import { ApiBody, ApiOperation } from '@nestjs/swagger';
 
 //Hago este comentario porque me aparecio el comit en jira se abia tardado mucho en aparecerer
 
@@ -86,9 +87,23 @@ export class AuthController {
   }
 
   @Post('/refresh')
-  refreshToken(@Body() token: string) {
+  @ApiOperation({ summary: 'Actualizar estado de reserva' })
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        token: {
+          type: 'string',
+          example: 'token'
+        }
+      },
+      required: ['estado']
+    }
+  })
+  refreshToken(@Body() data:{token:string}) {
     try {
-      return this.authService.refreshToken(token);
+      console.log(data.token)
+      return this.authService.refreshToken(data.token);
     } catch (error) {
       if (error instanceof Error) {
         throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
