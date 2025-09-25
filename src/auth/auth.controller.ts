@@ -112,4 +112,6 @@ export class AuthController {
       throw new HttpException('error en rol', HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
+
+  
 }
