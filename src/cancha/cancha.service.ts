@@ -36,6 +36,7 @@ export class CanchaService {
       const [result,total]  = await this.canchaRepository
       .createQueryBuilder()
       .where("Cancha.propetario.id =:id",{id:usuario.id})
+      .andWhere("Cancha.activa =:estado",{estado:true})
       .skip((page - 1) * pageSize)
               .take(pageSize)
               .getManyAndCount();
