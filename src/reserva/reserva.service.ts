@@ -29,6 +29,10 @@ export class ReservaService {
               id
             }
           }
+        },
+        relations: {
+          cancha:true,
+          cliente:true
         }
 
         
