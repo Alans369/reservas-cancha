@@ -22,16 +22,25 @@ export class ReservaService {
 
   async findAll(id: number): Promise<Reserva[]> {
     try {
-      const reserva = await this.reservaRepository
-        .createQueryBuilder()
-        .where('Reserva.cancha.id=:id', { id })
-        .getMany();
+      const reserva2 = await this.reservaRepository.find({
+        where:{
+          cancha:{
+            propetario:{
+              id
+            }
+          }
+        }
 
-      if (!reserva) {
+        
+      })
+
+     
+
+      if (!reserva2) {
         return [];
       }
 
-      return reserva;
+      return reserva2;
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       throw new Error('error al obtener las reserva del propietario');
